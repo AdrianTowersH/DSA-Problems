@@ -1,0 +1,45 @@
+Defaultdict
+
+A defaultdict is a subclass of the standard dictionary (dict) found in the built-in collections module.
+
+The main difference? A standard dictionary throws a KeyError if you try to access a key that doesn't exist yet. A defaultdict, however, automatically initializes a default value for any missing key you try to access or modify.
+Why Do We Need It? (The Standard Dict Problem)
+
+Imagine you want to count how many times words appear in a list. With a regular dictionary, you have to constantly check if the word is already a key:
+
+
+counts = {}
+words = ["apple", "banana", "apple", "cherry", "banana", "apple"]
+
+for word in words:
+    if word not in counts:
+        counts[word] = 0  # Manual initialization to avoid KeyError
+    counts[word] += 1
+
+It works, but it's clunky. You can use .get(), but it still requires extra code.
+
+count = {}
+
+for word in words:
+    count[word] = 1 + count.get(word, 0)
+
+
+Enter defaultdict
+
+When you create a defaultdict, you pass it a factory function (like int, list, or set) as an argument. 
+This function tells the dictionary what default value to assign when a brand-new key is encountered.
+
+from collections import defaultdict
+
+# Passing 'int' means the default value for a new key is 0
+word_counts = defaultdict(int)
+
+words = ["apple", "banana", "apple", "cherry", "banana", "apple"]
+
+for word in words:
+    # No 'if word not in word_counts' needed!
+    # If the word isn't there, Python automatically sets word_counts[word] = 0 first.
+    word_counts[word] += 1
+
+print(dict(word_counts))
+# Output: {'apple': 3, 'banana': 2, 'cherry': 1}
